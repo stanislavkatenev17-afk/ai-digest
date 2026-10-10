@@ -1,18 +1,12 @@
-<!-- astroblog capstone: используется в фазе 02. Копируется в корень проекта, затем /init дополняет техническими деталями Astro. -->
-
 # CLAUDE.md
 
 Автоматический AI-дайджест на Astro + Vercel. Проект курса Claude Code Basics.
 
 ## Стек
 
-- Astro `^6.1.1` (`src/content/blog/` — статьи в markdown с frontmatter).
+- Astro `^6.1.1` (`src/content/blog/` — статьи в Markdown с frontmatter).
 - Node `>=22.12.0` (из `engines` в `package.json`).
-- Интеграции Astro: `@astrojs/mdx` (MDX в постах), `@astrojs/sitemap` (генерация `sitemap-index.xml` при билде), `@astrojs/rss` (RSS-фид из той же коллекции). Оптимизация изображений — `sharp` через `astro:assets`.
-- SSR-адаптера пока нет — чистый статический билд. Если фаза курса потребует серверную логику, понадобится `@astrojs/vercel` и `output: 'server' | 'hybrid'` в `astro.config.mjs`.
-- TypeScript strict (`astro/tsconfigs/strict` + `strictNullChecks`).
-- Vercel (автодеплой на push в `main`).
-- MCP: Tavily (поиск новостей), Replicate (обложки).
+- Vercel (автоматическое развёртывание после push в `main`).
 
 ## Команды
 
@@ -22,18 +16,30 @@
 
 ## Структура статьи
 
-Файл `src/content/blog/YYYY-MM-DD-slug.md` с frontmatter:
+Файл `src/content/blog/<basename>.md`, где `<basename>` имеет формат `YYYY-MM-DD-slug`: дата выпуска и короткая часть имени латиницей по теме. Frontmatter:
 
 ```yaml
 ---
 title: Заголовок до 60 символов без точки
 description: Одно предложение до 160 символов.
-pubDate: 2026-04-23
-cover: https://replicate.delivery/...
+pubDate: YYYY-MM-DD
+heroImage: /covers/<basename>.webp
 source: https://example.com/news
 tags: [ai, llm]
 ---
 ```
+
+### Правило именования обложек
+
+Имя файла обложки в `public/covers/` всегда совпадает с именем файла статьи без расширения (`basename`). Пример:
+
+| Артефакт | Путь |
+|---|---|
+| Статья | `src/content/blog/2026-04-25-claude-4-6-opus.md` |
+| Обложка | `public/covers/2026-04-25-claude-4-6-opus.webp` |
+| Frontmatter | `heroImage: /covers/2026-04-25-claude-4-6-opus.webp` |
+
+`heroImage` — локальный путь к файлу из `public/covers/`. Начиная со ступени 5 скрипты скачивают картинки с Replicate в эту папку, чтобы обложки не пропадали через сутки. До ступени 5 поле либо пустое (`heroImage: ""`), либо отсутствует.
 
 ## Редполитика
 
@@ -43,11 +49,10 @@ tags: [ai, llm]
 
 ### Стиль
 
-- Информационный стиль (Ильяхов). Без маркетинговой лексики, оценочных прилагательных, канцелярита.
+- Без маркетинговой лексики и канцелярита.
 - Язык — русский.
-- Предложения до 25 слов. Точки в конце буллетов.
+- Предложения до 25 слов. Точки в конце пунктов списка.
 - Без шаблона «от X до Y». Перечисляем конкретно.
-- Без AI-маркеров: «погружаться», «ландшафт», «ключевой момент», «является свидетельством».
 
 ### Формат
 
@@ -55,14 +60,16 @@ tags: [ai, llm]
 - Описание: одно предложение до 160 символов.
 - Тело: 300–500 слов, 2–4 абзаца.
 - Источник: обязательная ссылка на первоисточник.
-- Обложка: URL от Replicate, соотношение 16:9.
 
 ### Обязательные поля frontmatter
 
-`title`, `description`, `pubDate`, `cover`, `source` — все заполнены. Stop-хук (фаза 06) блокирует публикацию, если хоть одно поле пустое.
+Для публикации обязательны: `title`, `description`, `pubDate`, `heroImage`, `source`. Схема контента в `src/content.config.ts` разрешает пустой `heroImage` и пропустит сборку. Обязательность при публикации проверит Stop-хук со ступени 6.
+
+### Обложки
+
+Картинки храним в `public/covers/<basename>.webp`. Начиная со ступени 5 скрипты скачивают файл с Replicate (`replicate.delivery`) в эту папку через `curl`: удалённые URL Replicate живут около 24 часов и потом перестают открываться. `heroImage` во frontmatter — это путь `/covers/<basename>.webp`, а не удалённый URL.
 
 ## Git
 
 - Ветка по умолчанию `main`.
-- С фазы 08 PreToolUse-хук блокирует прямой push в `main`. Автоматика коммитит в ветку `digest/auto`, слияние в `main` — вручную по желанию.
 - Запрещены `git push --force`, `git reset --hard`, `git commit --amend`.
