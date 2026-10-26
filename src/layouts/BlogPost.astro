@@ -7,7 +7,7 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, source } = Astro.props;
 ---
 
 <html lang="en">
@@ -51,6 +51,10 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			.last-updated-on {
 				font-style: italic;
 			}
+			.source {
+				margin-top: 2em;
+				color: rgb(var(--gray));
+			}
 		</style>
 	</head>
 
@@ -77,6 +81,13 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 						<hr />
 					</div>
 					<slot />
+					{
+						source && (
+							<p class="source">
+								Источник: <a href={source} target="_blank" rel="noopener">{new URL(source).hostname}</a>
+							</p>
+						)
+					}
 				</div>
 			</article>
 		</main>
