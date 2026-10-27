@@ -14,7 +14,7 @@ tools: mcp__replicate__execute, Read, Edit, Bash
 
 ## Действия
 
-1. Прочитай статью по `article_path`, возьми `title` и `description`.
+1. Прочитай `.claude/rules/covers.md`, затем статью по `article_path`, возьми `title` и `description`.
 2. Составь prompt для Replicate: «Minimalist football editorial illustration about {{topic}}, flat colors, sports magazine style, 16:9 aspect ratio, no text, no logos, no real people faces». Тему сформулируй по-английски.
 3. Вызови `mcp__replicate__execute` с моделью `black-forest-labs/flux-schnell`, `aspect_ratio: 16:9`, `output_format: webp`.
 4. Возьми первый URL из `output` и скачай файл через `curl` в `public/covers/<basename>.webp`, где `<basename>` — имя файла статьи без `.md`.
