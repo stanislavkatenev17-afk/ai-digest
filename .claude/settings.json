@@ -1,16 +1,31 @@
 {
   "permissions": {
+    "allow": [
+      "Bash(npm run build)",
+      "Bash(npm run dev)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(ls:*)"
+    ],
     "deny": [
       "Read(**/.env*)",
       "Read(**/credentials*)",
-      "Read(**/*secret*)"
+      "Read(**/*secret*)",
+      "Read(**/*.pem)",
+      "Bash(git push --force:*)",
+      "Bash(rm -rf:*)"
     ]
   },
   "mcpServers": {
     "tavily": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "tavily-mcp@latest"],
+      "args": [
+        "-y",
+        "tavily-mcp@latest"
+      ],
       "env": {
         "TAVILY_API_KEY": "${TAVILY_API_KEY}"
       }
@@ -18,7 +33,11 @@
     "replicate": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "replicate-mcp@alpha", "--tools=code"],
+      "args": [
+        "-y",
+        "replicate-mcp@alpha",
+        "--tools=code"
+      ],
       "env": {
         "REPLICATE_API_TOKEN": "${REPLICATE_API_TOKEN}"
       }
