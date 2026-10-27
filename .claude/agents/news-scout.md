@@ -10,7 +10,7 @@ tools: mcp__tavily__tavily_search, Read
 
 ## Задача
 
-1. Прочитай `CLAUDE.md`, разделы «Тематика» и «Критерии отбора». Отбирай строго по ним.
+1. Прочитай `.claude/rules/news-selection.md` — турниры и критерии отбора. Отбирай строго по ним.
 2. Через `mcp__tavily__tavily_search` найди новости за последние 7 дней по запросам: «Premier League news», «LaLiga news», «Serie A news», «Bundesliga news», «Ligue 1 news», «Champions League news», а также «official transfer confirmed», «long-term injury football». Не ограничивайся одним запросом.
 3. Отбрось: слухи, назначения и отставки тренеров, прогнозы и ставки, дубликаты, маркетинговые анонсы без сути, ре-публикации старых новостей, новости без первоисточника.
 4. По возможности выбирай темы из разных турниров. Верни 3 темы в формате:
