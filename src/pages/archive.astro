@@ -1,0 +1,105 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const monthFormat = new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' });
+const dayFormat = new Intl.DateTimeFormat('ru-RU', { day: '2-digit', month: '2-digit' });
+
+// Group posts by month; posts are already sorted, so groups come out newest first.
+const groups = [];
+for (const post of posts) {
+	const label = monthFormat.format(post.data.pubDate).replace(' г.', '');
+	const title = label.charAt(0).toUpperCase() + label.slice(1);
+	const last = groups.at(-1);
+	if (last && last.title === title) {
+		last.posts.push(post);
+	} else {
+		groups.push({ title, posts: [post] });
+	}
+}
+---
+
+<!doctype html>
+<html lang="ru">
+	<head>
+		<BaseHead title={`Архив — ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+		<style>
+			h1 {
+				margin-bottom: 1.5rem;
+			}
+			h2 {
+				margin: 2rem 0 0.75rem;
+				font-size: 1.5rem;
+			}
+			ul {
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+			}
+			li {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: baseline;
+				gap: 0.25rem 1rem;
+				padding: 0.5rem 0;
+				border-bottom: 1px solid rgb(var(--gray-light));
+			}
+			.date {
+				color: rgb(var(--gray));
+				font-variant-numeric: tabular-nums;
+			}
+			li a {
+				flex: 1 1 16rem;
+				text-decoration: none;
+				color: rgb(var(--black));
+			}
+			li a:hover {
+				color: rgb(var(--accent));
+			}
+			.tags {
+				display: flex;
+				gap: 0.5rem;
+				color: rgb(var(--gray));
+				font-size: 0.875rem;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Архив</h1>
+			{
+				groups.map((group) => (
+					<section>
+						<h2>{group.title}</h2>
+						<ul>
+							{group.posts.map((post) => (
+								<li>
+									<time class="date" datetime={post.data.pubDate.toISOString()}>
+										{dayFormat.format(post.data.pubDate)}
+									</time>
+									<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+									{post.data.tags.length > 0 && (
+										<span class="tags">
+											{post.data.tags.map((tag) => (
+												<span>{tag}</span>
+											))}
+										</span>
+									)}
+								</li>
+							))}
+						</ul>
+					</section>
+				))
+			}
+		</main>
+		<Footer />
+	</body>
+</html>
