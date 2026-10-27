@@ -77,7 +77,11 @@ tags: [epl, transfers]
 
 Картинки храним в `public/covers/<basename>.webp`. Начиная со ступени 5 скрипты скачивают файл с Replicate (`replicate.delivery`) в эту папку через `curl`: удалённые URL Replicate живут около 24 часов и потом перестают открываться. `heroImage` во frontmatter — это путь `/covers/<basename>.webp`, а не удалённый URL.
 
-## Git
+## Git Conventions
 
-- Ветка по умолчанию `main`.
+- Ветка по умолчанию `main`. В неё попадаем через PR, не прямым push.
+- Новые изменения — в отдельной ветке: `feat/…`, `fix/…`, `docs/…`, `chore/…`, `digest/…`.
+- Коммиты атомарные: одно логическое изменение — один коммит.
+- Сообщение коммита: `тип: что сделано` по-русски, тип из Conventional Commits (`feat`, `fix`, `docs`, `chore`). Пример: `feat: обзор Барселона — Реал`.
+- Перед коммитом проверь сборку: `npm run build`.
 - Запрещены `git push --force`, `git reset --hard`, `git commit --amend`.
