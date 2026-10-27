@@ -1,6 +1,6 @@
 ---
 name: digest
-description: Выпуск AI-дайджеста через субагенты. news-scout → 3 цепочки writer → cover-artist (параллельно между собой) → page-builder.
+description: Выпуск футбольного дайджеста (3 статьи) через субагенты. news-scout → 3 цепочки writer → cover-artist (параллельно между собой) → page-builder.
 ---
 
 # /digest через субагенты
@@ -11,7 +11,7 @@ description: Выпуск AI-дайджеста через субагенты. n
 2. Для каждой темы `t` (параллельно, по одной задаче на тему):
    1. Dispatch `writer` с входами `{title, source_url, angle}` из `t`.
    2. Дождись от `writer` строку `article_path: <путь>`.
-   3. Dispatch `cover-artist` с входом `article_path`. Он дочитает статью, сгенерирует обложку, впишет `cover:` в frontmatter.
+   3. Dispatch `cover-artist` с входом `article_path`. Он дочитает статью, сгенерирует обложку, скачает картинку в `public/covers/` и впишет `heroImage:` в frontmatter.
    4. Дождись от `cover-artist` `cover_url`.
 3. Собери `article_path` со всех трёх тем в один список. Dispatch `page-builder` с этим списком.
 4. Ответь отчётом: 3 темы, 3 ссылки на статьи после деплоя Vercel, SHA коммита, имя ветки (`digest/auto`).
