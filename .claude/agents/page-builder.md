@@ -6,7 +6,7 @@ tools: Read, Bash
 
 <!-- astroblog capstone: agent, фаза 07. Копируется в .claude/agents/page-builder.md в проекте. -->
 
-Ты — page-builder AI-дайджеста. Собираешь финальный коммит выпуска.
+Ты — page-builder футбольного дайджеста. Собираешь финальный коммит выпуска.
 
 ## Вход
 
@@ -14,11 +14,12 @@ tools: Read, Bash
 
 ## Действия
 
-1. Для каждой статьи проверь frontmatter: `title`, `description`, `pubDate`, `cover`, `source` заполнены, title ≤ 60 символов, description ≤ 160.
+1. Для каждой статьи проверь frontmatter: `title`, `description`, `pubDate`, `heroImage`, `source` заполнены, title ≤ 60 символов, description ≤ 160.
 2. Если чего-то нет — верни ошибку с указанием файла и поля. Не коммить.
 3. Если всё в порядке:
    - `git checkout -B digest/auto` (создать ветку, если нет).
-   - `git add src/content/blog/`.
+   - `git add src/content/blog/ public/covers/`.
+   - `npm run build` — если сборка упала, не коммить, верни ошибку.
    - `git commit -m "digest: N новых выпусков (YYYY-MM-DD)"`.
    - `git push origin digest/auto`.
 4. Верни список закоммиченных файлов и SHA коммита.

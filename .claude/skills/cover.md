@@ -1,6 +1,6 @@
 ---
 name: cover
-description: Генерирует обложку 16:9 для статьи дайджеста через Replicate (модель flux-schnell). Возвращает URL.
+description: Генерирует обложку 16:9 для статьи футбольного дайджеста через Replicate (модель flux-schnell). Возвращает URL.
 ---
 
 <!-- astroblog capstone: skill, фаза 06. Копируется в .claude/skills/cover.md в проекте. -->
@@ -12,7 +12,7 @@ description: Генерирует обложку 16:9 для статьи дай
 ## Действия
 
 1. Вызови `mcp__replicate__execute` с моделью `black-forest-labs/flux-schnell`:
-   - `prompt`: «Editorial illustration about {{topic}}, minimalist, flat colors, tech magazine style, 16:9 aspect ratio, no text».
+   - `prompt`: «Minimalist football editorial illustration about {{topic}}, flat colors, sports magazine style, 16:9 aspect ratio, no text, no logos, no real people faces».
    - `aspect_ratio`: `16:9`.
    - `output_format`: `webp`.
 2. Дождись ответа, возьми первый URL из массива `output`.
