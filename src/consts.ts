@@ -1,2 +1,2 @@
-export const SITE_TITLE = 'AI Digest';
-export const SITE_DESCRIPTION = 'Автоматический дайджест новостей AI, машинного обучения и больших языковых моделей.';
+export const SITE_TITLE = 'Футбольный дайджест';
+export const SITE_DESCRIPTION = 'Автоматический дайджест главных новостей европейского футбола: АПЛ, Ла Лига, Серия А, Бундеслига, Лига 1 и Лига чемпионов.';
